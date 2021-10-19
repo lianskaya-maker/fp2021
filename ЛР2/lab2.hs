@@ -18,6 +18,23 @@ import System.IO
 
 --а) без застосування вбудованих функцій
 
+myLength :: [a] -> Int
+myLength [] = 0
+myLength (_:xs) = 1 + myLength xs
+
+myDrop :: Int -> [a] -> [a]
+myDrop _ [] = []
+myDrop n xs@(_:xs')
+   | n > 0     = myDrop (n-1) xs'
+   | otherwise = xs
+
+f1 :: [a] -> Int -> a -> [a]
+
+f1 xs 0 y  = xs
+f1 [] n y = []
+f1 xs n y
+ | myLength xs < n = xs
+ | otherwise = n `take` xs ++ [y] ++ f1 (drop n xs) n y
 
 --б) з застосуванням вбудованих функцiй
 f2 :: [a] -> Int -> a -> [a]

@@ -36,6 +36,14 @@ f1 xs n y
  | myLength xs < n = xs
  | otherwise = n `take` xs ++ [y] ++ f1 (drop n xs) n y
 
+ --Тестування
+
+--ghci> f1 "1234567" 2 '@'
+--"12@34@56@7"
+
+--ghci> f1 "bnfldjgfkslv" 4 '|'
+--"bnfl|djgf|kslv|"
+
 --б) з застосуванням вбудованих функцiй
 f2 :: [a] -> Int -> a -> [a]
 
@@ -45,6 +53,13 @@ f2 xs n y
  | length xs < n = xs
  | otherwise = take n xs ++ [y] ++ f2 (drop n xs) n y
 
+ --Тестування
+
+--ghci> f2 "1234567" 2 '@'
+--"12@34@56@7"
+
+--ghci> f2 "bnfldjgfkslv" 4 '|'
+--"bnfl|djgf|kslv|"
 
 --Завдання 2. Знайти перше просте число в указаному дiапазонi.
 
@@ -60,6 +75,21 @@ f3 (x:xs)
     | otherwise = f3 xs
     where b = and [ x `mod` y /= 0 | y <- [2..(x-1)]]
 
+--Тестування
+
+--ghci> f3 [1..10]
+--1
+
+--ghci> f3 [2,4..20]
+--2
+
+--ghci> f3 [4,8..40] 
+-- There is no prime number
+--CallStack (from HasCallStack):
+--error, called at lab2.hs:57:9 in main:Main
+
+--ghci> f3 [10, 107 ..1000] 
+--107
 
 --б) з застосуванням вбудованих функцiй
 f4 :: [Int] -> Int
@@ -72,6 +102,22 @@ f4 xs
     where 
         b = and [ x `mod` y /= 0 | y <- [2..(x-1)]]
         x = head xs
+
+ --Тестування
+
+--ghci> f4 [1..10]
+--1
+
+--ghci> f4 [2,4..20]
+--2
+
+--ghci> f4 [4,8..40]
+--Exception: There is no prime number
+--CallStack (from HasCallStack):
+--  error, called at lab2.hs:68:9 in main:Main
+
+--ghci> f4 [10, 107 ..1000]
+--107
 
  --Висновок: Під час лабораторної роботи я здобула практичні навички створення рекурсивних функцій в haskell, 
  --а також мала додаткову практику зі списками та вбудоваинми функціями haskell, що значно полегшують написання коду.

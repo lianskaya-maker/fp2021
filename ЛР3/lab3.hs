@@ -79,24 +79,64 @@ divideListN xs n
 --Завдання 2. Перевiрити гiпотезу Ґольдбаха у вказаному дiапазонi.
 
 --а) без застосування вбудованих функцій
--- goldbach :: [Int] -> Bool 
--- goldbach [] = error "The list is empty"
--- goldbach (x:xs)
---     | isEven x && x > 4 = goldbach xs
---     | isOdd x = goldbach xs
---     | otherwise = False
---     where t = True
 
+myHead :: [a] -> a
+myHead (x:xs) = x
+
+goldbach :: Int -> (Int, Int)
+goldbach a = myHead $
+                    filter (\(x,y) -> isPrime x && isPrime y) $
+                    map (\c -> (c, a - c)) [3,5..a `div` 2]
+  where
+  factors a = filter (isFactor a) [2..a-1]
+  isFactor a b = a `mod` b == 0
+  isPrime 1 = False
+  isPrime a = null $ factors a
+
+goldbachRange :: [Int] -> [(Int, Int)]
+goldbachRange [] = []
+goldbachRange (x:xs) = goldbach x : goldbachRange xs
 
 --Тестування
 
+-- ghci> goldbachRange [1..10]
+-- [*** Exception: lab3.hs:84:1-17: Non-exhaustive patterns in function myHead
+
+-- ghci> goldbachRange [4,6..10]
+-- [*** Exception: lab3.hs:84:1-17: Non-exhaustive patterns in function myHead
+
+-- ghci> goldbachRange [6,10..17]
+-- [(3,3),(3,7),(3,11)]
+-- ghci> goldbachRange [14,16..25]
+-- [(3,11),(3,13),(5,13),(3,17),(3,19),(5,19)]
 
 
 --б) з застосуванням вбудованих функцiй
 
+goldbach' :: Int -> (Int, Int)
+goldbach' a = head $
+                    filter (\(x,y) -> isPrime x && isPrime y) $
+                    map (\c -> (c, a - c)) [3,5..a `div` 2]
+  where
+  factors a = filter (isFactor a) [2..a-1]
+  isFactor a b = a `mod` b == 0
+  isPrime 1 = False
+  isPrime a = null $ factors a
+
+goldbachRange' :: [Int] -> [(Int, Int)]
+goldbachRange' = map goldbach'
 
  --Тестування
 
+-- ghci> goldbachRange' [1..10]
+-- [*** Exception: Prelude.head: empty list
+-- ghci> goldbachRange' [4,6..10]
+-- [*** Exception: Prelude.head: empty list
+-- ghci> goldbachRange' [6,10..17]
+-- [(3,3),(3,7),(3,11)]
+-- ghci> goldbachRange' [14,16..25]
+-- [(3,11),(3,13),(5,13),(3,17),(3,19),(5,19)]
 
-
- --Висновок: Під час лабораторної роботи я 
+ --Висновок: Під час лабораторної роботи я мала змогу познайомитися та 
+ --імплементувати нові функції мови Haskell, а саме: filter, map, null, isPrime та splitAt, 
+ --а також дізналася як використовуються та навіщо потрібні такі символи як '.' та '$'.
